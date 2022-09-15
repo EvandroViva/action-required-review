@@ -61,6 +61,11 @@ async function main() {
 		const reviewers = await require( './reviewers.js' )();
 		core.startGroup( `Found ${ reviewers.length } reviewer(s)` );
 		reviewers.forEach( r => core.info( r ) );
+		if ( core.getBooleanInput( 'consider-pr-owner' ) ) {
+			core.info( `Considering the PR owner as required reviewer` );
+		} else {
+			core.info( `Not considering the PR owner as required reviewer` );
+		}
 		core.endGroup();
 
 		const paths = await require( './paths.js' )();

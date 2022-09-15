@@ -12,6 +12,7 @@ async function fetchReviewers() {
 	const owner = github.context.payload.repository.owner.login;
 	const repo = github.context.payload.repository.name;
 	const pr = github.context.payload.pull_request.number;
+	const user_login = github.context.payload.pull_request.user.login;
 
 	const reviewers = new Set();
 	try {
@@ -37,6 +38,10 @@ async function fetchReviewers() {
 			error,
 			{}
 		);
+	}
+
+	if ( core.getBooleanInput( 'consider-pr-owner' ) ) {
+		reviewers.add( user_login );
 	}
 
 	return [ ...reviewers ].sort();
